@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="Desert View">
+    <script src="js/master.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <a-sky src="background/desert.jpg" rotation="0 230 0"></a-sky>
+    </a-scene>
+
+    <script>
+
+            document.addEventListener("keydown", onDocumentKeyDown, false);
+  function onDocumentKeyDown(event) {
+    var keyCode = event.which;
+    if (keyCode == 68) { // s
+      window.location.replace("/winterspark");  
+    }
+    else if (keyCode == 65) { // a
+      window.location.replace("/islandworld");    
+    }
+    console.log(keyCode);
+  };
+  </script>
+  </body>
+</html>

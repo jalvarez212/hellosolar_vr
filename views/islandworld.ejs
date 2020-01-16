@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<!--
+
+Copyright 2017 Google Inc. All rights reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+    body { 
+      margin: 0; 
+      overflow: hidden;
+    }
+    canvas { 
+      width: 100%; 
+      height: 100% 
+    }
+/*      #viewer {
+        width: 100%;
+        height: calc(100% - 80px);
+      }
+      #info {
+        padding: 12px;
+        text-align: center;
+      }
+      #asset_name {
+        font-size: 22px;
+        font-weight: bold;
+      }
+      #asset_author {
+        color: #888;
+      }*/
+    </style>
+  </head>
+  <body>
+
+<!--     <div id="viewer"></div>
+
+    <div id="info">
+      <span id="asset_name">Title</span><br/>
+      by <span id="asset_author">Author</span>
+    </div> -->
+
+    <script src="js/three-r107.js"></script>
+    <script src="poly/LegacyGLTFLoader.js"></script>
+    <script src="controls/OrbitControls.js" type="text/javascript"></script>
+    <script>
+
+      // THREE.JS VIEWER
+
+      const WIDTH = window.innerWidth;
+      const HEIGHT = window.innerHeight;
+      var celestialSystem;
+      var light;
+      var radius = 1500;  
+      var min_radius = 300; 
+      var universe_radius = radius+min_radius;
+
+      var camera = new THREE.PerspectiveCamera( 60, WIDTH / HEIGHT, 0.01, 100 );
+      camera.position.set( 5, 3, 5 );
+      camera.lookAt( 0, 1.5, 0 );
+
+      var scene = new THREE.Scene();
+      textureLoader = new THREE.TextureLoader();
+      scene.background = textureLoader.load( 'background/starmap4k1.jpg' );
+
+      lights = new THREE.HemisphereLight( 0x000000, 0x214f80, 3 );
+      scene.add(lights);
+ 
+
+      // scene.add( new THREE.GridHelper( 10, 10 ) );
+
+      var renderer = new THREE.WebGLRenderer();
+      renderer.setPixelRatio( window.devicePixelRatio );
+      renderer.setSize( WIDTH, HEIGHT );
+      document.body.appendChild( renderer.domElement );
+
+        controls = new THREE.OrbitControls( camera, renderer.domElement );
+
+        //controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
+        controls.maxPolarAngle = Math.PI / 2;
+
+        controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
+        controls.dampingFactor = 0.05;
+
+        controls.screenSpacePanning = false;
+        controls.update();
+
+
+      function animate() {
+
+        // var time = performance.now() / 5000;
+
+        // camera.position.x = Math.sin( time ) * 5;
+        // camera.position.z = Math.cos( time ) * 5;
+        // camera.lookAt( 0, 1.5, 0 );
+        controls.update();
+        renderer.render( scene, camera );
+        requestAnimationFrame( animate );
+
+
+      }
+
+      requestAnimationFrame( animate );
+
+      // POLY REST API
+      //AIzaSyDJgGvuZsmLAPnkV31I0tnn38WBtqlOLr4
+
+      // POLY REST API
+
+      const API_KEY = 'AIzaSyAWm_z2JFuwXUIKvRV9NZVG1iRrLqDhBw0';
+
+      function loadAsset( id ) {
+
+        var url = `https://poly.googleapis.com/v1/assets/${id}/?key=${API_KEY}`;
+
+        var request = new XMLHttpRequest();
+        request.open( 'GET', url, true );
+        request.addEventListener( 'load', function ( event ) {
+
+          var asset = JSON.parse( event.target.response );
+          // asset_name.textContent = asset.displayName;
+          // asset_author.textContent = asset.authorName;
+
+          var format = asset.formats.find( format => { return format.formatType === 'GLTF'; } );
+
+          if ( format !== undefined ) {
+
+            var url = format.root.url;
+
+            var loader = new THREE.LegacyGLTFLoader();
+            loader.load( url, function ( response ) {
+
+              scene.add( response.scene );
+
+            } );
+
+          }
+
+        } );
+        request.send( null );
+
+      }
+
+      if ( API_KEY.startsWith( '**' ) ) {
+
+        alert( 'Sample incorrectly set up. Please enter your API Key for the Poly API in the API_KEY variable.' );
+
+      }
+
+      loadAsset( '4rPTYOaCNBa' );
+
+        document.addEventListener("keydown", onDocumentKeyDown, false);
+  function onDocumentKeyDown(event) {
+    var keyCode = event.which;
+    if (keyCode == 68) { // s
+      window.location.replace("/desertstorm");  
+    }
+    else if (keyCode == 65) { // a
+      window.location.replace("/starlights");    
+    }
+    console.log(keyCode);
+  };
+
+    </script>
+  </body>
+</html>
