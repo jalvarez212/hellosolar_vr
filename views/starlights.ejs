@@ -123,42 +123,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TimelineLite.min.js"></script>
 
-
-
-<script type="text/javascript">
-var lat;
-var lon;
-var currentWeather;
-
-function displayWeather() {
-
-  var tempConverted = Math.round(currentWeather.main.temp - 273.15);
-  var weatherIcon = currentWeather.weather[0].icon;
-  var doc = document.getElementById('wtf');
-  doc.innerHTML = `<img src='http://openweathermap.org/img/wn/${weatherIcon}@2x.png'></img>`+'<br>'+tempConverted+' &deg C';
-
-}
-
-
-navigator.geolocation.getCurrentPosition(function(position) {
-
-console.log(position.coords.latitude, position.coords.longitude);
-lat = position.coords.latitude;
-lon = position.coords.longitude;
-const Http = new XMLHttpRequest();
-let url=`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=ef14a2be4c43cebd657b7b2df0c7469a`;
-Http.open("GET", url);
-Http.send();
-
-Http.onreadystatechange = (e) => {
-  currentWeather = JSON.parse(Http.responseText);
-  console.log(currentWeather.weather[0].main);
-  displayWeather();
-}
-
-});
-</script>
-
 <script type="text/javascript">
 
 var sampledb = { constellation:[ ]};
