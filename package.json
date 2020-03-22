@@ -9,13 +9,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "ejs": "^2.7.4",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
     "oauth": "^0.9.15",
-    "passport": "^0.4.1",
-    "passport-twitter": "^1.0.4",
     "qs": "^6.9.1",
-    "twitter-node-client": "0.0.6"
+    "request": "^2.88.2",
+    "twitter-lite": "^0.9.4"
   }
 }

@@ -102,7 +102,7 @@
 
 </head>
 <body>
-	
+
 	<div id="overlay">
 		<div>
 			<button id="startButton">Start v4.01</button>
@@ -286,19 +286,25 @@ function getStars () {
 }
 
 
+function twitterAgent(){
 
 var xmlhttp = new XMLHttpRequest();
 xmlhttp.onreadystatechange = function() {
 if (this.readyState == 4 && this.status == 200) {
-    myObj = JSON.parse(this.responseText);
+    code = this.responseText;
+    window.location.href = `https://api.twitter.com/oauth/authenticate?oauth_token=${code}`;
+
+    console.log(code);
+
   	//console.log(myObj);
-for(var i = 0; i < myObj.length; i++){
+// for(var i = 0; i < myObj.length; i++){
   		
-  		stars.push(myObj[i].text);
+//   		stars.push(myObj[i].text);
   		
-  	}
+//   	}
 
   }
+
 getStars ();
 loadTweet();
 populateTweets();
@@ -306,8 +312,14 @@ format();
 push();
 
 };
-xmlhttp.open('GET', '/connect/twitter', true);
+
+xmlhttp.open('GET', '/auth/twitter', true);
 xmlhttp.send(); 
+
+}
+
+document.addEventListener('click', twitterAgent, false);
+
 
 </script>
 
